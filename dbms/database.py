@@ -231,3 +231,60 @@ class ClimateDatabase:
         conn.close()
 
         return int(df["count"][0]) 
+    
+    # --------------------------------------------------
+    # Add new Attribute
+    # --------------------------------------------------
+
+    def add_column(
+        self,
+        column_name,
+        column_type="REAL"
+    ):
+
+        schema = self.show_schema()
+
+        if column_name in schema["name"].values:
+
+            print(
+            f"{column_name} already exists."
+            )
+
+            return
+
+        conn = self._connect()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            f"""
+            ALTER TABLE operating_data
+            ADD COLUMN {column_name}
+            {column_type}
+            """
+        )
+
+        conn.commit()
+        conn.close()
+
+    # --------------------------------------------------
+    # Show Schema
+    # --------------------------------------------------
+
+    def show_schema(self):
+
+        conn = self._connect()
+
+        query = """
+        PRAGMA table_info(
+            operating_data
+        )
+        """
+
+        df = pd.read_sql(
+        query,
+        conn
+        )
+
+        conn.close()
+
+        return df

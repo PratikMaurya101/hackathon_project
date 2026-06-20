@@ -92,22 +92,44 @@ with col3:
 st.divider()
 
 # ==================================
-# Centered Selector
+# Navigation State
 # ==================================
 
-left, center, right = st.columns([1, 2, 1])
+if "analysis_type" not in st.session_state:
+    st.session_state.analysis_type = "CO₂"
+
+# ==================================
+# Centered Navigation Buttons
+# ==================================
+
+left, center, right = st.columns([2, 3, 2])
 
 with center:
 
-    analysis_type = st.segmented_control(
-        "Analysis Type",
-        [
-            "CO₂",
-            "Energy",
-            "Cost"
-        ],
-        default="CO₂"
-    )
+    b1, b2, b3 = st.columns(3)
+
+    with b1:
+        if st.button(
+            "🌍 CO₂",
+            use_container_width=True
+        ):
+            st.session_state.analysis_type = "CO₂"
+
+    with b2:
+        if st.button(
+            "⚡ Energy",
+            use_container_width=True
+        ):
+            st.session_state.analysis_type = "Energy"
+
+    with b3:
+        if st.button(
+            "💶 Cost",
+            use_container_width=True
+        ):
+            st.session_state.analysis_type = "Cost"
+
+analysis_type = st.session_state.analysis_type
 
 st.write("")
 
@@ -117,7 +139,7 @@ st.write("")
 
 if analysis_type == "CO₂":
 
-    st.subheader("🌍 Carbon Emissions")
+    st.subheader("🌍 Carbon Emissions Analysis")
 
     chart_df = df[
         [
@@ -133,7 +155,7 @@ if analysis_type == "CO₂":
     )
 
     st.metric(
-        "Reduction",
+        "CO₂ Reduction",
         f"{co2_reduction:.1f}%"
     )
 
@@ -143,7 +165,7 @@ if analysis_type == "CO₂":
 
 elif analysis_type == "Energy":
 
-    st.subheader("⚡ Energy Consumption")
+    st.subheader("⚡ Energy Consumption Analysis")
 
     chart_df = df[
         [
@@ -159,7 +181,7 @@ elif analysis_type == "Energy":
     )
 
     st.metric(
-        "Reduction",
+        "Energy Reduction",
         f"{energy_reduction:.1f}%"
     )
 
@@ -185,6 +207,6 @@ elif analysis_type == "Cost":
     )
 
     st.metric(
-        "Reduction",
+        "Cost Reduction",
         f"{cost_reduction:.1f}%"
     )
