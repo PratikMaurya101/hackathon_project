@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.graph_objects as go
 
 # ----------------------------------
 # Page Config
@@ -149,9 +150,50 @@ if analysis_type == "CO₂":
         ]
     ].set_index("Day")
 
-    st.line_chart(
-        chart_df,
-        height=500
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Baseline_CO2"],
+            mode="lines",
+            name="Baseline",
+            line=dict(
+                color="lightgray",
+                width=3
+            )
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Optimized_CO2"],
+            mode="lines",
+            name="Optimized",
+            line=dict(
+                color="green",
+                width=3
+            )
+        )
+    )
+
+    fig.update_layout(
+        height=500,
+        yaxis=dict(
+            range=[0, 150]
+        ),
+        margin=dict(
+            l=20,
+            r=20,
+            t=20,
+            b=20
+        )
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
     )
 
     st.metric(
@@ -175,9 +217,44 @@ elif analysis_type == "Energy":
         ]
     ].set_index("Day")
 
-    st.line_chart(
-        chart_df,
-        height=500
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Baseline_kWh"],
+            mode="lines",
+            name="Baseline",
+            line=dict(
+                color="lightgray",
+                width=3
+            )
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Optimized_kWh"],
+            mode="lines",
+            name="Optimized",
+            line=dict(
+                color="green",
+                width=3
+            )
+        )
+    )
+
+    fig.update_layout(
+        height=500,
+        yaxis=dict(
+            range=[0, 700]
+        )
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
     )
 
     st.metric(
@@ -201,9 +278,44 @@ elif analysis_type == "Cost":
         ]
     ].set_index("Day")
 
-    st.line_chart(
-        chart_df,
-        height=500
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Baseline_Cost"],
+            mode="lines",
+            name="Baseline",
+            line=dict(
+                color="lightgray",
+                width=3
+            )
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=chart_df.index,
+            y=chart_df["Optimized_Cost"],
+            mode="lines",
+            name="Optimized",
+            line=dict(
+                color="green",
+                width=3
+            )
+        )
+    )
+
+    fig.update_layout(
+        height=500,
+        yaxis=dict(
+            range=[0, 250]
+        )
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
     )
 
     st.metric(
